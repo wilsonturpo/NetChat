@@ -13,3 +13,6 @@ C:\Users\Wilson\source\repos\NETCHAT\Persistence\obj\Debug\net5.0\Persistence.cs
 C:\Users\Wilson\source\repos\NETCHAT\Persistence\obj\Debug\net5.0\Persistence.dll
 C:\Users\Wilson\source\repos\NETCHAT\Persistence\obj\Debug\net5.0\ref\Persistence.dll
 C:\Users\Wilson\source\repos\NETCHAT\Persistence\obj\Debug\net5.0\Persistence.pdb
+C:\Users\Wilson\source\repos\NETCHAT\Persistence\bin\Debug\net5.0\Persistence.runtimeconfig.json
+C:\Users\Wilson\source\repos\NETCHAT\Persistence\bin\Debug\net5.0\Persistence.runtimeconfig.dev.json
+C:\Users\Wilson\source\repos\NETCHAT\Persistence\obj\Debug\net5.0\Persistence.genruntimeconfig.cache

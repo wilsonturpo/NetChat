@@ -40,13 +40,16 @@ AGREGAR ENTITY FRAMEWORK AL PROYECTO PERSISTENCE
 1. Ir al administrador de paquetes nuget
 2. Agregar la dependencia: Microsoft.EntityFrameworkCore al proyecto "Persistence"
 3. Agregar la dependencia: Microsoft.EntityFrameworkCore.Sqlite a "Persistence"
+4. Agregar la dependencia: Microsoft.EntityFrameworkCore.Design a "Persistence" y "API"
 
 CREAR LA CONEXIÓN A LA BASE DE DATOS
 1. Crear la clase: DataContext
 2. Hacer la configuración en: StarUp
 3. Agregar la conexión a: appsettings.json
 
-
+REALIZAR LAS MIGRACIONES
+1. Instalar dotnet ef: dotnet tool install --global dotnet-ef
+2. Realizar la migración: dotnet-ef
 
 
 
