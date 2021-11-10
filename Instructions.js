@@ -33,6 +33,20 @@ GENERAR REFERENCIAS
     dotnet add reference ../Domain/
 
 
+CREAR UNA API BÁSICA
+CREAR EL DOMINIO BÁSICO
+
+AGREGAR ENTITY FRAMEWORK AL PROYECTO PERSISTENCE
+1. Ir al administrador de paquetes nuget
+2. Agregar la dependencia: Microsoft.EntityFrameworkCore al proyecto "Persistence"
+3. Agregar la dependencia: Microsoft.EntityFrameworkCore.Sqlite a "Persistence"
+
+CREAR LA CONEXIÓN A LA BASE DE DATOS
+1. Crear la clase: DataContext
+2. Hacer la configuración en: StarUp
+3. Agregar la conexión a: appsettings.json
+
+
 
 
 
