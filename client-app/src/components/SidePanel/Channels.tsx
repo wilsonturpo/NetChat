@@ -1,86 +1,57 @@
 import axios from 'axios'
-import React, { Component } from 'react'
-import { Button, Form, Icon, Input, Menu, Modal } from 'semantic-ui-react'
+import React, { useState, useEffect } from 'react'
+import { Icon, Menu } from 'semantic-ui-react'
 import {IChannel} from '../../models/channels'
+import { ChannelForm } from './ChannelForm'
 import { ChannelItem } from './ChannelItem'
 
-interface IState{
-    channels: IChannel[]
-    modal: boolean
-}
+const Channels =()=> {
 
-class Channels extends Component<{}, IState> {
+    const [myChannels, setChannels] = useState<IChannel[]>([]);
+    const [selectedModal, setModal] = useState(false);
 
-    state: IState={
-        channels : [],
-        modal: false,
-    }
 
-    componentDidMount(){
+    useEffect(()=>{
         axios.get<IChannel[]>('http://localhost:5000/api/channels').then((response)=>{
-            this.setState({
-                channels: response.data
-            })
+            setChannels(response.data)
         })
-    }
-    openModal = ()=> this.setState({modal: true})
-    closeModal = ()=> this.setState({modal: false})
+    }, [])
 
-    displayChannels = (channels: IChannel[])=>{
-        return(
-            channels.length > 0 &&
-            channels.map((channel)=>{
-               <ChannelItem key={channel.id} channel={channel}/>
-            })
-        )
-    }
-    render(){
-        const {channels, modal} = this.state;        
-        return (
+        const openModal = ()=> setModal(true)
+        const closeModal = ()=> setModal(false)
+
+        const displayChannels = (channels: IChannel[]) => {
+            return (
+              channels.length > 0 &&
+              channels.map((channel) => (
+                <ChannelItem key={channel.id} channel={channel} />
+              ))
+            )
+        }
+
+        const handleCreateChannel = (channel: IChannel) =>{
+            setChannels([...myChannels, channel])
+        }
+
+        return (           
+
             <React.Fragment>
-                <Menu.Menu
-                    style={{paddingBottom: '2em'}}    
-                >
+                <Menu.Menu style={{paddingBottom: '2em'}}>
                     <Menu.Item>
                         <span>
                             <Icon name="exchange"/> CHANNELS
                         </span>{' '}
-                        ({channels.length}) <Icon name="add" onClick={this.openModal}/>
+                        ({myChannels.length}) <Icon name="add" onClick={openModal}/>
                     </Menu.Item>
-
-                    {this.displayChannels(channels)}
+                    {displayChannels(myChannels)}
                 </Menu.Menu>
-
-                <Modal basic open={modal}>
-                    <Modal.Header>Add Channel</Modal.Header>
-                    <Modal.Content>
-                        <Form>
-                            <Form.Field>
-                                <Input fluid label="Channel Name" name="channelName" />
-                            </Form.Field>
-
-                            <Form.Field>
-                                <Input fluid label="Channel Description" name="channelDescription" />
-                            </Form.Field>
-                        </Form>
-                    </Modal.Content>
-                        <Modal.Actions>
-                            <Button basic color='green' inverted >
-                            <Icon name='checkmark' /> Add
-                            </Button>
-
-                            <Button color='red' inverted onClick={this.closeModal}>
-                            <Icon name='remove' /> Cancel
-                            </Button>
-                        </Modal.Actions>
-                        
-                    
-                </Modal>
+                <ChannelForm 
+                    selectedModal={selectedModal}  
+                    closeModal={closeModal}
+                    createChannel={handleCreateChannel}/>
+                
             </React.Fragment>
         )
     }
-   
-}
-
 
 export default Channels;
