@@ -1,9 +1,11 @@
-import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { Icon, Menu } from 'semantic-ui-react'
+
 import {IChannel} from '../../models/channels'
 import { ChannelForm } from './ChannelForm'
 import { ChannelItem } from './ChannelItem'
+
+import agent from '../../api/agent'
 
 const Channels =()=> {
 
@@ -12,8 +14,8 @@ const Channels =()=> {
 
 
     useEffect(()=>{
-        axios.get<IChannel[]>('http://localhost:5000/api/channels').then((response)=>{
-            setChannels(response.data)
+        agent.Channels.list().then((response)=>{
+            setChannels(response)
         })
     }, [])
 
@@ -30,7 +32,9 @@ const Channels =()=> {
         }
 
         const handleCreateChannel = (channel: IChannel) =>{
-            setChannels([...myChannels, channel])
+            agent.Channels.create(channel).then(()=>
+            setChannels([...myChannels, channel]))
+            
         }
 
         return (           
