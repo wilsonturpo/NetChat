@@ -1,4 +1,3 @@
-import React from "react";
 import { Menu } from "semantic-ui-react";
 import Channels from "./Channels";
 import { UserPanel } from "./UserPanel";

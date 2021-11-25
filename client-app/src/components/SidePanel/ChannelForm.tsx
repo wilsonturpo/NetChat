@@ -1,15 +1,12 @@
-import React, {ChangeEvent, useState} from 'react'
+import React, {ChangeEvent, useContext, useState} from 'react'
 import { Button, Form, Icon, Input, Modal } from 'semantic-ui-react'
+import { observer } from 'mobx-react-lite'
+
 import { IChannel } from '../../models/channels'
 import {v4 as uuid} from 'uuid'
+import ChannelStore from '../../stores/ChannelStore'
 
-interface IProps{
-    selectedModal: boolean
-    closeModal: () => void
-    createChannel: (channel: IChannel) => void
-}
-
-export const ChannelForm: React.FC<IProps> = ({selectedModal, closeModal, createChannel}) => {
+const ChannelForm: React.FC = () => {
 
     const initialChannel ={
         id: '',
@@ -18,6 +15,8 @@ export const ChannelForm: React.FC<IProps> = ({selectedModal, closeModal, create
     }
 
     const [channel, setChannel] = useState<IChannel>(initialChannel)
+    const {isModalVisible, showModal, createChannel} = useContext(ChannelStore)
+
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         console.log(event.target.value)
@@ -30,11 +29,11 @@ export const ChannelForm: React.FC<IProps> = ({selectedModal, closeModal, create
             id: uuid()
         }
         createChannel(newChannel)
-        closeModal()
+        showModal(false)
     }
 
     return (
-        <Modal basic open={selectedModal}>
+        <Modal basic open={isModalVisible}>
                     <Modal.Header>Add Channel</Modal.Header>
                     <Modal.Content>
                         <Form>
@@ -61,7 +60,7 @@ export const ChannelForm: React.FC<IProps> = ({selectedModal, closeModal, create
                             <Icon name='checkmark' /> Add
                             </Button>
 
-                            <Button color='red' inverted onClick={closeModal}>
+                            <Button color='red' inverted onClick={()=>showModal(false)}>
                             <Icon name='remove' /> Cancel
                             </Button>
                         </Modal.Actions>                        
@@ -69,3 +68,5 @@ export const ChannelForm: React.FC<IProps> = ({selectedModal, closeModal, create
                 </Modal>
     )
 }
+
+export default observer(ChannelForm)

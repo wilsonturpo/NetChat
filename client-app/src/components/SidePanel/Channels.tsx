@@ -1,26 +1,20 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { Icon, Menu } from 'semantic-ui-react'
+import { observer } from 'mobx-react-lite'
 
 import {IChannel} from '../../models/channels'
-import { ChannelForm } from './ChannelForm'
+import ChannelForm from './ChannelForm'
 import { ChannelItem } from './ChannelItem'
 
-import agent from '../../api/agent'
+import ChannelStore from '../../stores/ChannelStore'
 
 const Channels =()=> {
-
-    const [myChannels, setChannels] = useState<IChannel[]>([]);
-    const [selectedModal, setModal] = useState(false);
-
+    const channelStore = useContext(ChannelStore)
+    const {channels} = channelStore
 
     useEffect(()=>{
-        agent.Channels.list().then((response)=>{
-            setChannels(response)
-        })
-    }, [])
-
-        const openModal = ()=> setModal(true)
-        const closeModal = ()=> setModal(false)
+        channelStore.loadChannels()
+    }, [channelStore])
 
         const displayChannels = (channels: IChannel[]) => {
             return (
@@ -31,12 +25,7 @@ const Channels =()=> {
             )
         }
 
-        const handleCreateChannel = (channel: IChannel) =>{
-            agent.Channels.create(channel).then(()=>
-            setChannels([...myChannels, channel]))
-            
-        }
-
+        console.log(channels)
         return (           
 
             <React.Fragment>
@@ -45,17 +34,13 @@ const Channels =()=> {
                         <span>
                             <Icon name="exchange"/> CHANNELS
                         </span>{' '}
-                        ({myChannels.length}) <Icon name="add" onClick={openModal}/>
+                        ({channels.length}) <Icon name="add" onClick={()=>channelStore.showModal(true)}/>
                     </Menu.Item>
-                    {displayChannels(myChannels)}
+                    {displayChannels(channels)}
                 </Menu.Menu>
-                <ChannelForm 
-                    selectedModal={selectedModal}  
-                    closeModal={closeModal}
-                    createChannel={handleCreateChannel}/>
-                
+                <ChannelForm/>                
             </React.Fragment>
         )
     }
 
-export default Channels;
+export default observer (Channels)
